@@ -4,8 +4,17 @@ sys.path.append(os.pardir)  # 부모 디렉터리의 파일을 가져올 수 있
 import numpy as np
 import pickle
 from dataset.mnist import load_mnist
-from common.functions import sigmoid, softmax
 
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x)) 
+
+def softmax(a):
+    c = np.max(a)
+    exp_a = np.exp(a - c)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+
+    return y
 
 def get_data():
     (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, flatten=True, one_hot_label=False)
@@ -13,7 +22,7 @@ def get_data():
 
 
 def init_network():
-    with open("sample_weight.pkl", 'rb') as f:
+    with open('ch03/sample_weight.pkl', 'rb') as f:
         network = pickle.load(f)
     return network
 
